@@ -93,14 +93,11 @@ def main() -> None:
     TOKEN = os.getenv('TOKEN')
     application = Application.builder().token(TOKEN).build()
 
-    # Регистрация обработчиков
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-    # Задача для проверки капсул каждые 60 секунд
     application.job_queue.run_repeating(check_and_send_capsules, interval=60)
 
-    # Запуск бота
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
